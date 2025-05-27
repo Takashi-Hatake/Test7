@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fire ALarm System</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px 0 40px 60px; /* space for toggle button */
+      
+      background-size: cover;
+
+  background-position: center;   
+      
+      background-image: url(https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Background/assets_task_01jw5hsb2fer3b0jntpve6h0eb_1748238209_img_1.png);
+      background-repeat: no-repeat;
+    }
+
+    /* Toggle Menu Styles */
+    #menu-toggle {
+      display: none;
+    }
+
+    .menu-icon {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: #333;
+      color: white;
+      font-size: 20px;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      z-index: 2000;
+    }
+    .menu-icon:hover{
+       color: black;
+       background-color: yellow;
+    }
+
+  .side-nav {
+  position: fixed;
+  top: 0;
+  left: -330px;
+  width: 295px;
+  height: 100%;
+  background-color: #1C1C1C;
+  color: white;
+  padding: 2em 1em;
+  transition: left 0.3s ease;
+  z-index: 1500;
+  border-radius: 20px;
+  box-shadow: 2px 2px 2px red;
+  /* Add these two lines: */
+  overflow-y: auto;
+  max-height: 100vh;
+}
+    #menu-toggle:checked + .menu-icon + .side-nav {
+      left: 0;
+    }
+
+    .side-nav a {
+      display: block;
+      color: black;
+      text-decoration: none;
+      margin: 1em 0;
+      height: 37px;
+      width: 235px;
+      font-size: 20px;
+      padding-top: 3px;
+      padding-left: 5px;
+      background-color: #FFD600;
+      border-radius: 7px;
+    }
+
+    .side-nav a:hover {
+      color: #FFD600;
+      background-color:#333;
+      
+    }
+
+    /* Slider Styles */
+    .slider-wrapper {
+      width: 800px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .slider-container {
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px yellow;
+      position: relative;
+    }
+    
+    .slider-container:hover { 
+      box-shadow: 0 2px 5px fire;
+    }
+    
+    
+
+    .slider-track {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .slide {
+      width: 800px;
+      flex-shrink: 0;
+      position: relative;
+      scroll-margin-top: 80px;
+    }
+
+    .slide img {
+      width: 100%;
+      height: 100%
+      object-fit: cover;
+      display: block;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      transition-delay: 0s;
+    }
+    
+    
+
+    .description-box {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      display: none;
+      font-size: 14px;
+      width: 90%;
+      text-align: center;
+    }
+
+    .slide:hover .description-box {
+      display: block;
+      
+    }
+    
+    .slide:hover img{
+       transform: scale(1.2);
+      transition-delay: 0.7s;
+    }
+
+    .nav-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      border: none;
+      font-size: 24px;
+      padding: 10px 15px;
+      cursor: pointer;
+      z-index: 10;
+      transition: background 0.3s;
+    }
+
+    .nav-button:hover {
+      background: rgba(0, 0, 0, 0.8);
+      
+    }
+
+    .prev { left: 10px; }
+    .next { right: 10px; }
+    
+    .details{
+       background-color: #333;
+       margin-left: 18%;
+       margin-right: 18%;
+       border-radius: 10px;
+       padding: 10px 15px;
+       color: yellow;
+       font-size: 11px !important;
+       box-shadow : 2px 2px 2px black;
+    }
+    
+    .topic{
+       background-color: rgba(0,0,0,0.1);
+       margin-left: 18%;
+       margin-right: 18%;
+       border-radius: 10px;
+       padding: 2px 4px;
+       color: yellow;
+       font-size: 50px !important;
+       box-shadow : 2px 2px 2px black;
+    }
+    
+    .filter{
+       background-color: rgba(0,0,0,0.4)
+    }
+    
+    
+    .Real {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  height: 400px; /* Adjust as needed */
+  width: 800px;
+  margin-left: 230px;
+  color: white;
+  border-radius: 20px;
+  box-shadow : 2px 2px 2px 2px black;
+}
+
+.Case {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 20px;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+hr{
+   height:10px;
+   background-color: black;
+}
+
+    
+  </style>
+</head>
+<body>
+
+<div class="filter">
+<BR><BR>
+
+
+
+<BR>
+<!-- Toggle Checkbox -->
+<input type="checkbox" id="menu-toggle">
+<label for="menu-toggle" class="menu-icon">☰</label>
+
+<!-- Side Navigation -->
+<div class="side-nav">
+  <BR><BR><BR>
+  <a href="https://www.google.com">CCTV</a>
+  <a href="https://www.youtube.com">Access Control System</a>
+  <BR><BR><BR>
+  <a href="#s1">Fire Alarm System</a>
+  <a href="#s2">Types</a>
+  <a href="#s3">Key Components</a>
+  <a href="#s4">Maintenance & Testing</a>
+  <a href="#s5">Fire Safety Integration</a>
+  <a href="#s6">Case Studies</a>
+  <a href="#s7">Conculsion</a>
+</div>
+<BR><BR><div id="s1"></div>
+<div class="topic" id="topic"><center><p style="font-size:50px">
+Fire Alarm System</p></center>
+</div>
+
+
+<BR><BR>
+
+<!-- Image Slider -->
+<div class="slider-wrapper">
+  <div class="slider-container" id="slider-container">
+    <div class="slider-track" id="slider-track">
+      <!-- Clone of last slide -->
+   <div class="slide" id="slide5">
+        <img src="https://raw.githubusercontent.com/Takashi-Hatake/Fire-Alarm-System/main/Assets%20/Fire_System/Waterrain.png" alt="Clone Last">
+        <div class="description-box"></div>
+      </div>
+
+      <!-- Original slides -->
+      <div class="slide" id="slide1">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Fire_System/Untitled1_20250526173211.png" alt="Image 1">
+        <div class="description-box">A Manual Pull Station is a device that allows people to manually trigger the fire alarm system in case of a fire emergency. It's usually installed on walls in accessible locations, often near exits or stairwells.</div>
+      </div>
+      <div class="slide" id="slide2">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Fire_System/Untitled1_20250526174917.png" alt="Image 2">
+        <div class="description-box">The Fire Alarm Control Panel (FACP) is the brain of the fire alarm system. It monitors and manages all connected devices, such as smoke detectors, heat sensors, manual pull stations, alarms, and notification appliances.</div>
+      </div>
+<div class="slide" id="slide3">
+  <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Fire_System/Untitled1_20250526175502.png" alt="Control Panel">
+  <div class="description-box">A fire alarm system is a safety device designed to detect the presence of fire or smoke and alert building occupants and emergency services. It typically consists of smoke detectors, heat detectors, manual call points (pull stations), control panels, and audible or visual alarms.</div>
+</div>
+
+      <div class="slide" id="slide4">
+        <img src="https://raw.githubusercontent.com/Takashi-Hatake/Fire-Alarm-System/main/Assets%20/Fire_System/Waterrain.png" alt="Image 4">
+        <div class="description-box">A fire sprinkler system is an active fire protection method that automatically discharges water when it detects heat from a fire, helping to control or extinguish it.</div>
+      </div>
+      
+
+
+
+      <!-- Clone of first slide -->
+      <div class="slide">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Fire_System/Untitled1_20250526173211.png" alt="Clone First">
+        <div class="description-box">Description for Image 1</div>
+      </div>
+    </div>
+
+    <!-- Navigation buttons -->
+    <button class="nav-button prev" onclick="prevSlide()">⟨</button>
+    <button class="nav-button next" onclick="nextSlide()">⟩</button>
+  </div>
+</div>
+
+
+<BR>
+
+
+<div class="details" id="details"><p>
+A Fire Alarm System is a safety device designed to detect the presence of fire or smoke and alert building occupants and emergency services. It typically consists of smoke detectors, heat detectors, manual call points (pull stations), control panels, and audible or visual alarms.</p></div>
+<BR><BR>   
+<!--
+<div class="details" id="details"><p>
+COntent in details should be paste here</p></div>
+-->
+
+
+<div class="details" id="details">
+<center><u>Benefits of Fire Alarm System:~</U></center>
+<ul>
+<li>Saving Lives: Prompt alerts give people more time to evacuate safely.</li>
+
+<li>Reducing Property Damage: Early response can limit the spread of fire and minimize destruction.</li>
+
+<li>Ensuring Faster Emergency Response: It allows fire services to act before the situation escalates.</li>
+
+<li>Compliance with Safety Regulations: Many local and international codes require fire alarm systems in residential, commercial, and industrial buildings.</li>
+</ul>
+</div>
+<BR><BR><HR><BR><BR>
+
+<div id="s2"></div>
+<div class="topic" id="topic"><center><p style="font-size:50px">
+Types of Fire Alarm System</p></center></div><BR>
+
+<!--
+<div class="topic" id="topic"><center><p style="font-size:50px">
+Types of Fire Alarm System</p></center></div><BR>
+-->
+
+<!-- Types of Fire Alarm System -->
+<div class="slider-wrapper">
+<div class="slider-container">
+<div class="slider-track">
+      <!-- Clone of last slide -->
+      <div class="slide" id="slide5">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Types/Untitled1_20250526181521.png" alt="Clone Last">
+        <div class="description-box">Hybrid</div>
+       </div>
+
+      <!-- Original slides -->
+      <div class="slide" id="slide1">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Types/Untitled1_20250526175726.png" alt="Image 1">
+        <div class="description-box">Control Panel</div>
+       </div>
+      <div class="slide" id="slide2">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Types/Untitled1_20250526175941.png" alt="Image 2">
+        <div class="description-box">Conventional System</div>
+      </div>
+      <div class="slide" id="slide3"> 
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Types/Untitled1_20250526180032.png" alt="Image 3">
+        <div class="description-box">Conventional System</div> 
+      </div>
+      <div class="slide" id="slide4">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Types/Untitled1_20250526180542.png" alt="Image 4">
+        <div class="description-box">COnventional System</div> 
+      </div>
+      <div class="slide" id="slide5-clone">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Types/Untitled1_20250526181210.png" alt="Image 5">
+        <div class="description-box">Addresseble System </div>
+      </div>
+      <div class="slide" id="slide6-clone">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Types/Untitled1_20250526181407.png" alt="Image 5">
+        <div class="description-box">Addresseble System</div> 
+      </div>
+      <div class="slide" id="slide7-clone">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Types/Untitled1_20250526181521.png" alt="Image 5">
+        <div class="description-box">Hybrid System</div>
+       </div>
+
+      <!-- Clone of first slide -->
+      <div class="slide">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Types/Untitled1_20250526175726.png" alt="Clone First">
+        <div class="description-box">Control Panel</div> 
+      </div>
+    </div>
+
+    <!-- Navigation buttons -->
+    <button class="nav-button prev" onclick="prevSlide()">⟨</button>
+    <button class="nav-button next" onclick="nextSlide()">⟩</button>
+  </div>
+</div>
+<BR>
+<div class="details" id="details">
+<center><U>Conventional System</U></center>
+<p> 
+A Conventional Fire Alarm System is a type of fire detection and alarm system that uses physical wiring to connect multiple devices—such as smoke detectors, heat detectors, and manual call points—to a central control panel. It is one of the oldest and simplest forms of fire alarm systems.
+</p></div>
+<BR>
+<div class="details" id="details">
+<center><U>Addressable System</U></center>
+<p> 
+An Addressable Fire Alarm System is a more advanced type of fire detection system in which each device (smoke detector, heat detector, call point, etc.) has a unique address or ID. This allows the fire alarm control panel to identify exactly which device has been activated, enabling faster and more precise response to potential fires.</p></div>
+<BR>
+<div class="details" id="details">
+<center><U>Wireless System</U></center> 
+<p> 
+A Wireless Fire Alarm System is a fire detection and alarm system where all devices (like smoke detectors, heat detectors, manual call points, and sounders) communicate with the control panel using wireless radio signals instead of wired connections.</p></div>
+<BR>
+<div class="details" id="details">
+<center><U>Hybrid System</U></center> 
+<p> 
+A Hybrid Fire Alarm System is a fire detection system that combines both wired and wireless technologies. It allows for wired devices where cabling is feasible and wireless devices in areas that are difficult or expensive to wire. This provides flexibility, scalability, and cost-effectiveness in a single system.
+</p></div>
+<BR><BR><HR><BR><BR>
+
+
+
+<div id="s3"></div>
+<div class="topic" id="topic"><center><p style="font-size:50px">
+Key Components</p></center></div><BR>
+<div class="slider-wrapper">
+<div class="slider-container">
+<div class="slider-track">
+      <!-- Clone of last slide -->
+      <div class="slide" id="slide7">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Actuator/Untitled2_20250527075200.png" alt="Clone Last">
+        <div class="description-box">Power Supply & Backup</div>
+      </div>
+
+      <!-- Original slides -->
+      <div class="slide" id="slide1">
+        <img src="https://raw.githubusercontent.com/Takashi-Hatake/Fire-Alarm-System/main/Assets%20/Actuator/Untitled1_20250526182715.png" alt="Image 1">
+        <div class="description-box">Siren</div>
+      </div>
+      <div class="slide" id="slide2">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Control_Panel/Untitled1_20250526175131.png" alt="Image 2">
+        <div class="description-box">Control Panel</div>
+      </div>
+      <div class="slide" id="slide3">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Sensors/Untitled1_20250526182130.png" alt="Image 3">
+        <div class="description-box">Smoke Detector</div>
+      </div>
+      <div class="slide" id="slide4">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Sensors/Untitled1_20250526183117.png" alt="Image 4">
+        <div class="description-box">Smoke and Fire Detection</div>
+      </div>
+      <div class="slide" id="slide5">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Actuator/Untitled1_20250526182619.png" alt="Image 5">
+        <div class="description-box">Manual Pull Station</div>
+      </div>
+      <div class="slide" id="slide6">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Actuator/Untitled1_20250526182804.png" alt="Image 6">
+        <div class="description-box">Strobes</div>
+      </div>
+      <div class="slide" id="slide7-clone">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Actuator/Untitled2_20250527075200.png" alt="Image 7">
+        <div class="description-box">Power Supply & Backup</div>
+      </div>
+
+      <!-- Clone of first slide -->
+      <div class="slide">
+        <img src="https://raw.githubusercontent.com/Takashi-Hatake/Fire-Alarm-System/main/Assets%20/Actuator/Untitled1_20250526182715.png" alt="Clone First">
+        <div class="description-box">Siren</div>
+      </div>
+    </div>
+
+    <!-- Navigation buttons -->
+    <button class="nav-button prev" onclick="prevSlide()">⟨</button>
+    <button class="nav-button next" onclick="nextSlide()">⟩</button>
+  </div>
+</div>
+
+
+
+<BR><BR><HR><BR><BR>
+
+
+<div id="s4"></div>
+<div class="topic" id="topic"><center><p style="font-size:50px">
+Maintenance & Testing</p></center></div><BR>
+<div class="slider-wrapper">
+<div class="slider-container">
+<div class="slider-track">
+      <!-- Clone of last slide -->
+      <div class="slide" id="slide5">
+        <img src="https://picsum.photos/id/1043/600/300" alt="Clone Last">
+        <div class="description-box">Maintaining accurate and timely log documentation for inspections, battery checks, and sensor calibrations is not just good practice—it’s often a legal, safety, and operational requirement.</div>
+      </div>
+
+      <!-- Original slides -->
+      <div class="slide" id="slide1">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Havoc_insurance_idk/Untitled1_20250526183309.png" alt="Image 1">
+        <div class="description-box">Regular inspection of a fire alarm system is crucial for ensuring the safety and reliability of the system in the event of a fire. These inspections are typically required by national fire codes (e.g., NFPA 72 in the United States), insurance companies, and local authorities.</div>
+      </div>
+      <div class="slide" id="slide2">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Havoc_insurance_idk/Maintenance.png" alt="Image 2">
+        <div class="description-box">Battery checks are a critical part of fire alarm system maintenance. Backup batteries ensure the system continues to function during a power outage.</div>
+      </div>
+      <div class="slide" id="slide3">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Havoc_insurance_idk/Maintenance2.png" alt="Image 3">
+        <div class="description-box">Sensor calibration ensures that fire detection devices (especially smoke and heat detectors) respond accurately to fire conditions and not to false triggers (e.g., dust, steam). Regular calibration is vital to maintain system sensitivity, code compliance, and occupant safety.</div>
+      </div>
+      <div class="slide" id="slide4">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Havoc_insurance_idk/Maintenance3.png" alt="Image 4">
+        <div class="description-box">Maintaining accurate and timely log documentation for inspections, battery checks, and sensor calibrations is not just good practice—it’s often a legal, safety, and operational requirement. </div>
+      </div>
+
+      <!-- Clone of first slide -->
+      <div class="slide">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Havoc_insurance_idk/Untitled1_20250526183309.png" alt="Clone First">
+        <div class="description-box">Regular inspection of a fire alarm system is crucial for ensuring the safety and reliability of the system in the event of a fire. These inspections are typically required by national fire codes (e.g., NFPA 72 in the United States), insurance companies, and local authorities.</div>
+      </div>
+    </div>
+
+    <!-- Navigation buttons -->
+    <button class="nav-button prev" onclick="prevSlide()">⟨</button>
+    <button class="nav-button next" onclick="nextSlide()">⟩</button>
+  </div>
+</div>
+
+<BR><BR><HR><BR><BR>
+
+
+
+<div id="s5"></div>
+<div class="topic" id="topic"><center><p style="font-size:50px">
+Fire Safety Integeration</p></center></div><BR>
+<div class="slider-wrapper">
+<div class="slider-container">
+<div class="slider-track">
+      <!-- Clone of last slide -->
+      <div class="slide" id="slide5">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Havoc_insurance_idk/Shutdown.png" alt="Clone Last">
+        <div class="description-box">HAVOC Shutdown</div>
+      </div>
+
+      <!-- Original slides -->
+      <div class="slide" id="slide2">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Actuator/Waterrain.png" alt="Image 1">
+        <div class="description-box">A Sprinkler System is an automatic fire suppression system designed to detect and control fires by discharging water when heat from a fire activates its components. It is one of the most effective fire protection methods used in commercial, industrial, and residential buildings.</div>
+      </div>
+      <div class="slide" id="slide2">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Actuator/Emergency_lights.png" alt="Image 2">
+        <div class="description-box">Emergency lighting is a backup lighting system designed to automatically turn on when the main power supply fails. Its primary purpose is to provide illumination for safe evacuation during emergencies such as fire, power outage, or other crises.</div>
+      </div>
+      <div class="slide" id="slide3">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Havoc_insurance_idk/HAVOC2.png" alt="Image 3">
+        <div class="description-box">Elevator Control refers to the system of hardware and software that manages the operation, movement, and safety of an elevator. It determines how elevators respond to user commands, allocate calls, and move between floors efficiently and safely.</div>  
+      </div>
+      <div class="slide" id="slide4">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Havoc_insurance_idk/HAVOC.png" alt="Image 4">
+        <div class="description-box">Elevator Control Benefits:~ 
+        Improved efficiency and reduced wait times
+Lower energy consumption
+Enhanced security and floor access control
+Remote diagnostics and maintenance alerts
+        </div>
+      </div>
+      <div class="slide" id="slide5-clone">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Havoc_insurance_idk/Shutdown.png" alt="Image 5">
+        <div class="description-box">HVAC Shutdown refers to the automatic deactivation of heating, ventilation, and air conditioning systems in a building during a fire alarm or smoke detection event. It’s a critical part of a building’s fire and life safety strategy, often required by fire codes.</div>
+      </div>
+
+      <!-- Clone of first slide -->
+      <div class="slide">
+        <img src="https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Actuator/Waterrain.png" alt="Clone First">
+        <div class="description-box">A Sprinkler System is an automatic fire suppression system designed to detect and control fires by discharging water when heat from a fire activates its components. It is one of the most effective fire protection methods used in commercial, industrial, and residential buildings.</div>
+      </div>
+    </div>
+
+    <!-- Navigation buttons -->
+    <button class="nav-button prev" onclick="prevSlide()">⟨</button>
+    <button class="nav-button next" onclick="nextSlide()">⟩</button>
+  </div>
+</div>
+
+<BR><BR><HR><BR><BR>
+
+<div class="topic" id="topic"><center><p style="font-size:50px">
+Case Studies</p></center></div>
+
+
+<BR>
+
+<div class="Real" style="background-image: url('https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Case/Untitled3_20250527100258.png');">
+  <div class="Case">
+    <h1>Fire Prevented due to early Detection</h1>
+    <p><b>Incident:</b> A sawmill in the United States experienced a significant fire that led to a complete shutdown, resulting in damages amounting to $3.42 million.</p>
+<p>
+<b>Action Taken:</b> In response, the company partnered with Infrared Cameras Inc. (ICI) to implement an early fire detection system using thermal imaging cameras and AI-driven software.
+</p><p>
+<b>Outcome:</b> The new system reduced asset failures by 62% in the first year, saving approximately $550,000 in unplanned downtime costs. Additionally, insurance premiums decreased by 15%, and the company achieved a 4.64x return on investment in fire prevention and an 11.4x return on asset reliability.</p>
+  </div>
+</div>
+<BR>
+
+<div id="s6"></div>
+<div class="Real" style="background-image: url('https://github.com/Takashi-Hatake/Fire-Alarm-System/raw/main/Assets%20/Case/Untitled3_20250527100405.png');">
+  <div class="Case">
+    <h1>Fire Due to Lack of Maintenance</h1>
+    <p><b>Incident:</b> In 1989, a catastrophic explosion occurred at the Phillips Petroleum Company's Houston Chemical Complex in Pasadena, Texas, resulting in 23 fatalities and 314 injuries.
+</p><p>
+<b>Cause:</b> The explosion was attributed to the release of flammable process gases, which were ignited due to inadequate maintenance practices, including lack of process hazard analysis, insufficient standard operating procedures, and failure to maintain fire protection systems.
+</p><p>
+<b>Consequences:</b> The incident led to significant loss of life and property, highlighting the critical importance of regular maintenance and adherence to safety protocols in preventing such disasters. 
+</p>
+  </div>
+</div>
+
+
+<BR><BR><HR><BR><BR>
+
+
+<div id="s7"></div>
+<div class="details" id="details">
+<center><h2>Conclusion</h2></center>
+<p>Fire alarm systems are not just regulatory requirements—they are life-saving infrastructures that play a critical role in ensuring safety in residential, commercial, and industrial spaces. As seen from real-world cases in India, early detection of fire through alarm systems can prevent major catastrophes, save lives, and reduce property damage significantly.
+</p></div>
+
+<BR>
+
+<div class="details" id="details">
+<p><center><h2>Summary</h2></center></p>
+<p><ul><li>Early Detection Saves Lives: A few seconds can mean the difference between evacuation and tragedy. Fire alarm systems provide that crucial time.</li>
+<li>
+Property Protection: Timely alerts help suppress fire at the source, minimizing damage and financial losses.</li>
+<li>
+Emergency Preparedness: Alarms initiate emergency response procedures, improving coordination and safety.
+</li><li>
+Compliance and Insurance: Well-maintained systems are often a legal requirement and may lower insurance premiums.
+</li></ul>
+</p></div>
+<BR>
+
+<div class="details" id="details">
+<p><center><h2>Key Takeaway</h2></center></p>
+<p><ul><li>
+Prevention is Better Than Cure: Fires caught early are easier to contain.
+</li><li>
+Technology Matters: Modern fire alarm systems with smoke, heat, and gas detection are far more reliable.
+</li><li>
+Neglect Can Be Fatal: Lack of maintenance, as seen in multiple Indian case studies, often turns minor issues into disasters.
+</li><li>
+Human Life First: Above all, these systems protect the most valuable asset—human lives.</li></ul>
+</p></div>
+
+<BR>
+
+<div class="details" id="details">
+<center><h2>Regular Check</h2></center>
+<p><ul><li>
+ Conduct quarterly or bi-annual system audits.
+</li><li>
+ Test alarms and replace batteries as needed.
+</li><li>
+ Train occupants or employees on emergency procedures.
+</li><li>
+ Engage certified professionals for inspection and maintenance.
+</li></p><p>
+A fire alarm system is only as good as its upkeep. Don’t wait for a wake-up call—act now to ensure safety tomorrow. 🔔🔥
+</p></div>
+<BR>
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+<script>
+  document.querySelectorAll('.slider-wrapper').forEach((wrapper) => {
+    const container = wrapper.querySelector('.slider-container');
+    const track = wrapper.querySelector('.slider-track');
+    const slides = wrapper.querySelectorAll('.slide');
+
+    let index = 1;
+    const slideWidth = 800;
+    const totalSlides = slides.length;
+
+    track.style.transform = `translateX(-${slideWidth * index}px)`;
+
+    function updateSlider() {
+      track.style.transition = 'transform 0.5s ease-in-out';
+      track.style.transform = `translateX(-${slideWidth * index}px)`;
+    }
+
+    wrapper.querySelector('.next').addEventListener('click', () => {
+      if (index >= totalSlides - 1) return;
+      index++;
+      updateSlider();
+    });
+
+    wrapper.querySelector('.prev').addEventListener('click', () => {
+      if (index <= 0) return;
+      index--;
+      updateSlider();
+    });
+
+    track.addEventListener('transitionend', () => {
+      const currentImg = slides[index].querySelector('img').alt;
+      if (currentImg.includes('Clone First')) {
+        track.style.transition = 'none';
+        index = 1;
+        track.style.transform = `translateX(-${slideWidth * index}px)`;
+      } else if (currentImg.includes('Clone Last')) {
+        track.style.transition = 'none';
+        index = totalSlides - 2;
+        track.style.transform = `translateX(-${slideWidth * index}px)`;
+      }
+    });
+
+    // Auto-slide
+    let autoSlide = setInterval(() => {
+      if (index < totalSlides - 1) {
+        index++;
+        updateSlider();
+      }
+    }, 4000);
+
+    container.addEventListener('mouseenter', () => clearInterval(autoSlide));
+    container.addEventListener('mouseleave', () => {
+      autoSlide = setInterval(() => {
+        if (index < totalSlides - 1) {
+          index++;
+          updateSlider();
+        }
+      }, 4000);
+    });
+  });
+</script>
+</div>
+</body>
+</html>
